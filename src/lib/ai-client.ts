@@ -71,3 +71,82 @@ export async function generateWithDeepSeek(
 
   throw lastError ?? new Error("DeepSeek API 调用失败");
 }
+
+/**
+ * DeepSeek API 流式生成（SSE）。
+ * 返回 AsyncGenerator，逐块产出 delta 文本。
+ */
+export async function* generateWithDeepSeekStream(
+  systemPrompt: string,
+  userPrompt: string,
+  temperature: number = 0.8,
+  model: string = "deepseek-chat"
+): AsyncGenerator<string> {
+  const apiKey = process.env.DEEPSEEK_API_KEY;
+  if (!apiKey || apiKey === "your_key_here") {
+    throw new Error(
+      "未配置 DEEPSEEK_API_KEY。请将 .env.example 复制为 .env.local 并填入你的 API Key。"
+    );
+  }
+
+  const messages: ChatMessage[] = [
+    { role: "system", content: systemPrompt },
+    { role: "user", content: userPrompt },
+  ];
+
+  const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model,
+      messages,
+      temperature,
+      max_tokens: 2048,
+      stream: true,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    throw new Error(
+      `DeepSeek API 返回错误 ${response.status}: ${errorBody}`
+    );
+  }
+
+  const reader = response.body?.getReader();
+  if (!reader) throw new Error("无法获取响应流");
+
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split("\n");
+      buffer = lines.pop() || "";
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed || !trimmed.startsWith("data: ")) continue;
+        const data = trimmed.slice(6);
+        if (data === "[DONE]") return;
+
+        try {
+          const parsed = JSON.parse(data);
+          const delta = parsed.choices?.[0]?.delta?.content;
+          if (delta) yield delta;
+        } catch {
+          // 跳过无法解析的行
+        }
+      }
+    }
+  } finally {
+    reader.releaseLock();
+  }
+}

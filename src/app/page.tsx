@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,8 +12,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Sparkles, Copy, RefreshCw, Pencil, Check, X, Clock } from "lucide-react";
+import { Sparkles, Copy, RefreshCw, Pencil, Check, X, Clock, Moon, Sun, Download } from "lucide-react";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 
 const platforms = [
   { value: "xiaohongshu", label: "📕 小红书" },
@@ -44,29 +45,67 @@ export default function Home() {
   const [generationId, setGenerationId] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState("");
+  const [model, setModel] = useState("deepseek-chat");
+  const [mounted, setMounted] = useState(false);
+  const { setTheme, resolvedTheme } = useTheme();
+
+  useEffect(() => { setMounted(true); }, []);
 
   const handleGenerate = async () => {
     if (!topic.trim()) return;
     setLoading(true);
     setError("");
     setResult("");
+    setIsEditing(false);
 
     try {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic: topic.trim(), platform, contentType }),
+        body: JSON.stringify({ topic: topic.trim(), platform, contentType, model }),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
-        throw new Error(data.error || "生成失败");
+        const errData = await res.json();
+        throw new Error(errData.error || "生成失败");
       }
 
-      setResult(data.content);
-      setGenerationId(data.id);
-      setIsEditing(false);
+      // 消费 SSE 流
+      const reader = res.body?.getReader();
+      if (!reader) throw new Error("无法读取响应流");
+
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed.startsWith("data: ")) continue;
+          const jsonStr = trimmed.slice(6);
+
+          try {
+            const parsed = JSON.parse(jsonStr);
+            if (parsed.error) {
+              throw new Error(parsed.error);
+            }
+            if (parsed.done) {
+              setGenerationId(parsed.id);
+            } else if (parsed.delta) {
+              setResult((prev) => prev + parsed.delta);
+            }
+          } catch (e) {
+            if (e instanceof SyntaxError) continue;
+            throw e;
+          }
+        }
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "未知错误");
     } finally {
@@ -83,6 +122,18 @@ export default function Home() {
   const handleStartEdit = () => {
     setEditContent(result);
     setIsEditing(true);
+    setIsEditing(true);
+  };
+
+  const handleExportMarkdown = () => {
+    const content = isEditing ? editContent : result;
+    const blob = new Blob([content], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${topic.trim().slice(0, 20) || "灵枢文案"}.md`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const handleCancelEdit = () => {
@@ -111,18 +162,32 @@ export default function Home() {
   const ctLabel = contentTypes.find((c) => c.value === contentType)?.label || "";
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center gap-3">
-          <Sparkles className="w-6 h-6 text-indigo-600" />
-          <h1 className="text-xl font-bold text-slate-900">灵枢</h1>
-          <span className="text-sm text-slate-500">AI 自媒体内容生产</span>
-          <div className="ml-auto">
+      <header className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-10">
+        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-2 sm:gap-3 flex-wrap">
+          <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600" />
+          <h1 className="text-lg sm:text-xl font-bold">灵枢</h1>
+          <span className="text-xs sm:text-sm text-muted-foreground hidden sm:inline">AI 自媒体内容生产</span>
+          <div className="ml-auto flex items-center gap-1">
+            {mounted && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+                title="切换深色模式"
+              >
+                {resolvedTheme === "dark" ? (
+                  <Sun className="w-4 h-4" />
+                ) : (
+                  <Moon className="w-4 h-4" />
+                )}
+              </Button>
+            )}
             <Link href="/history">
               <Button variant="ghost" size="sm">
-                <Clock className="w-4 h-4 mr-1" />
-                历史记录
+                <Clock className="w-4 h-4 mr-1 hidden sm:inline" />
+                <span className="text-xs sm:text-sm">历史</span>
               </Button>
             </Link>
           </div>
@@ -139,7 +204,7 @@ export default function Home() {
           <CardContent className="space-y-4">
             {/* Topic */}
             <div className="space-y-2">
-              <label className="text-sm font-medium text-slate-700">
+              <label className="text-sm font-medium text-foreground">
                 主题 / 关键词
               </label>
               <Textarea
@@ -159,7 +224,7 @@ export default function Home() {
             {/* Platform + ContentType */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-700">
+                <label className="text-sm font-medium text-foreground">
                   目标平台
                 </label>
                 <Select value={platform} onValueChange={(v) => v && setPlatform(v)}>
@@ -177,7 +242,7 @@ export default function Home() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-700">
+                <label className="text-sm font-medium text-foreground">
                   内容类型
                 </label>
                 <Select value={contentType} onValueChange={(v) => v && setContentType(v)}>
@@ -193,6 +258,22 @@ export default function Home() {
                   </SelectContent>
                 </Select>
               </div>
+            </div>
+
+            {/* Model Selector */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-muted-foreground">
+                AI 模型
+              </label>
+              <Select value={model} onValueChange={(v) => v && setModel(v)}>
+                <SelectTrigger className="w-full sm:w-48">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="deepseek-chat">DeepSeek V3</SelectItem>
+                  <SelectItem value="deepseek-reasoner">DeepSeek R1</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Generate Button */}
@@ -252,6 +333,10 @@ export default function Home() {
                     <Button variant="outline" size="sm" onClick={handleCopy}>
                       <Copy className="w-4 h-4 mr-1" />
                       {copied ? "已复制" : "复制"}
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={handleExportMarkdown}>
+                      <Download className="w-4 h-4 mr-1" />
+                      导出
                     </Button>
                   </>
                 )}
