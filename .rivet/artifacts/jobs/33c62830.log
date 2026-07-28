@@ -1,0 +1,57 @@
+
+> tianshu@0.1.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use, trying 3001 instead.
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3001
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 5s
+ ○ Compiling / ...
+ ✓ Compiled / in 10.9s (925 modules)
+ GET / 200 in 11582ms
+ ✓ Compiled in 1189ms (451 modules)
+ ○ Compiling /api/generate ...
+ ✓ Compiled /api/generate in 1793ms (497 modules)
+/api/generate error: Error: 未配置 DEEPSEEK_API_KEY。请将 .env.example 复制为 .env.local 并填入你的 API Key。
+    at generateWithDeepSeek (webpack-internal:///(rsc)/./src/lib/ai-client.ts:13:15)
+    at POST (webpack-internal:///(rsc)/./src/app/api/generate/route.ts:53:103)
+    at async E:\vibe-coding\Tianshu\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:57228
+    at async eT.execute (E:\vibe-coding\Tianshu\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:46851)
+    at async eT.handle (E:\vibe-coding\Tianshu\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:58760)
+    at async doRender (E:\vibe-coding\Tianshu\node_modules\next\dist\server\base-server.js:1366:42)
+    at async cacheEntry.responseCache.get.routeKind (E:\vibe-coding\Tianshu\node_modules\next\dist\server\base-server.js:1588:28)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\vibe-coding\Tianshu\node_modules\next\dist\server\base-server.js:1496:28)
+    at async DevServer.renderPageComponent (E:\vibe-coding\Tianshu\node_modules\next\dist\server\base-server.js:1924:24)
+    at async DevServer.renderToResponseImpl (E:\vibe-coding\Tianshu\node_modules\next\dist\server\base-server.js:1962:32)
+    at async DevServer.pipeImpl (E:\vibe-coding\Tianshu\node_modules\next\dist\server\base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\vibe-coding\Tianshu\node_modules\next\dist\server\next-server.js:272:17)
+    at async DevServer.handleRequestImpl (E:\vibe-coding\Tianshu\node_modules\next\dist\server\base-server.js:818:17)
+    at async E:\vibe-coding\Tianshu\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (E:\vibe-coding\Tianshu\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (E:\vibe-coding\Tianshu\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (E:\vibe-coding\Tianshu\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (E:\vibe-coding\Tianshu\node_modules\next\dist\server\lib\router-server.js:359:24)
+    at async requestHandlerImpl (E:\vibe-coding\Tianshu\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (E:\vibe-coding\Tianshu\node_modules\next\dist\server\lib\start-server.js:141:13)
+ POST /api/generate 500 in 1992ms
+   Reload env: .env.local
+ ✓ Compiled in 2.1s (437 modules)
+ ✓ Compiled in 969ms (437 modules)
+ ✓ Compiled in 563ms (451 modules)
+ ✓ Compiled in 355ms (451 modules)
+ ✓ Compiled in 406ms (451 modules)
+ ✓ Compiled in 650ms (451 modules)
+ ✓ Compiled in 557ms (451 modules)
+ ✓ Compiled in 397ms (451 modules)
+ ✓ Compiled in 825ms (453 modules)
+ ✓ Compiled in 776ms (439 modules)
+ ✓ Compiled in 318ms (453 modules)
+ ✓ Compiled in 697ms (453 modules)
+ ✓ Compiled in 551ms (453 modules)
+ ✓ Compiled in 896ms (475 modules)
+ ✓ Compiled in 313ms (475 modules)
+ ✓ Compiled in 356ms (475 modules)
+ ✓ Compiled in 708ms (475 modules)

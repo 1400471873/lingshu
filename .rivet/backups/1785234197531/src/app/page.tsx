@@ -20,17 +20,12 @@ const platforms = [
   { value: "douyin", label: "🎵 抖音" },
   { value: "gongzhonghao", label: "💬 公众号" },
   { value: "weibo", label: "🔵 微博" },
-  { value: "bilibili", label: "📺 B站" },
-  { value: "zhihu", label: "🤔 知乎" },
 ];
 
 const contentTypes = [
   { value: "tuwen", label: "图文文案" },
   { value: "short_video", label: "短视频脚本" },
   { value: "long_article", label: "长文" },
-  { value: "title", label: "爆款标题" },
-  { value: "comment", label: "评论区回复" },
-  { value: "live_script", label: "直播话术" },
 ];
 
 export default function Home() {

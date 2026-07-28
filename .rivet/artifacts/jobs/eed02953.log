@@ -1,0 +1,162 @@
+
+> tianshu-temp@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+ ✓ Ready in 11.3s
+   Reload env: .env
+ ○ Compiling /api/generate ...
+ ✓ Compiled /api/generate in 1485ms (60 modules)
+/api/generate error: Error: 未配置 DEEPSEEK_API_KEY。请将 .env.example 复制为 .env.local 并填入你的 API Key。
+    at generateWithDeepSeek (webpack-internal:///(rsc)/./src/lib/ai-client.ts:13:15)
+    at POST (webpack-internal:///(rsc)/./src/app/api/generate/route.ts:53:103)
+    at async E:\vibe-coding\Tianshu\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:57228
+    at async eT.execute (E:\vibe-coding\Tianshu\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:46851)
+    at async eT.handle (E:\vibe-coding\Tianshu\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:6:58760)
+    at async doRender (E:\vibe-coding\Tianshu\node_modules\next\dist\server\base-server.js:1366:42)
+    at async cacheEntry.responseCache.get.routeKind (E:\vibe-coding\Tianshu\node_modules\next\dist\server\base-server.js:1588:28)
+    at async DevServer.renderToResponseWithComponentsImpl (E:\vibe-coding\Tianshu\node_modules\next\dist\server\base-server.js:1496:28)
+    at async DevServer.renderPageComponent (E:\vibe-coding\Tianshu\node_modules\next\dist\server\base-server.js:1924:24)
+    at async DevServer.renderToResponseImpl (E:\vibe-coding\Tianshu\node_modules\next\dist\server\base-server.js:1962:32)
+    at async DevServer.pipeImpl (E:\vibe-coding\Tianshu\node_modules\next\dist\server\base-server.js:922:25)
+    at async NextNodeServer.handleCatchallRenderRequest (E:\vibe-coding\Tianshu\node_modules\next\dist\server\next-server.js:272:17)
+    at async DevServer.handleRequestImpl (E:\vibe-coding\Tianshu\node_modules\next\dist\server\base-server.js:818:17)
+    at async E:\vibe-coding\Tianshu\node_modules\next\dist\server\dev\next-dev-server.js:339:20
+    at async Span.traceAsyncFn (E:\vibe-coding\Tianshu\node_modules\next\dist\trace\trace.js:154:20)
+    at async DevServer.handleRequest (E:\vibe-coding\Tianshu\node_modules\next\dist\server\dev\next-dev-server.js:336:24)
+    at async invokeRender (E:\vibe-coding\Tianshu\node_modules\next\dist\server\lib\router-server.js:179:21)
+    at async handleRequest (E:\vibe-coding\Tianshu\node_modules\next\dist\server\lib\router-server.js:359:24)
+    at async requestHandlerImpl (E:\vibe-coding\Tianshu\node_modules\next\dist\server\lib\router-server.js:383:13)
+    at async Server.requestListener (E:\vibe-coding\Tianshu\node_modules\next\dist\server\lib\start-server.js:141:13)
+ POST /api/generate 500 in 2712ms
+ ○ Compiling / ...
+ ⨯ ./src/app/globals.css:3:1
+Syntax error: E:\vibe-coding\Tianshu\src\app\globals.css The `border-border` class does not exist. If `border-border` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 1 | [39m[36m@import[39m [32m"tw-animate-css"[39m[33m;[39m
+ [90m 2 | [39m[36m@import[39m [32m"shadcn/tailwind.css"[39m[33m;[39m
+[1m[31m>[39m[22m[90m 3 | [39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 4 | [39m[36m@tailwind[39m components[33m;[39m
+ [90m 5 | [39m[36m@tailwind[39m utilities[33m;[39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|E:\vibe-coding\Tianshu\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!E:\vibe-coding\Tianshu\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!E:\vibe-coding\Tianshu\src\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./src/app/globals.css:3:1
+Syntax error: E:\vibe-coding\Tianshu\src\app\globals.css The `border-border` class does not exist. If `border-border` is a custom class, make sure it is defined within a `@layer` directive.
+
+ [90m 1 | [39m[36m@import[39m [32m"tw-animate-css"[39m[33m;[39m
+ [90m 2 | [39m[36m@import[39m [32m"shadcn/tailwind.css"[39m[33m;[39m
+[1m[31m>[39m[22m[90m 3 | [39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 4 | [39m[36m@tailwind[39m components[33m;[39m
+ [90m 5 | [39m[36m@tailwind[39m utilities[33m;[39m
+ GET / 500 in 24276ms
+ ✓ Compiled /_error in 1374ms (1174 modules)
+ ✓ Compiled in 387ms (637 modules)
+ ✓ Compiled in 703ms (637 modules)
+ ⨯ ./src/app/globals.css:1:1
+Syntax error: E:\vibe-coding\Tianshu\src\app\globals.css The `border-border` class does not exist. If `border-border` is a custom class, make sure it is defined within a `@layer` directive.
+
+[1m[31m>[39m[22m[90m 1 | [39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m utilities[33m;[39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|E:\vibe-coding\Tianshu\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!E:\vibe-coding\Tianshu\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!E:\vibe-coding\Tianshu\src\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+   Reload env: .env.local
+ ⨯ ./src/app/globals.css:1:1
+Syntax error: E:\vibe-coding\Tianshu\src\app\globals.css The `border-border` class does not exist. If `border-border` is a custom class, make sure it is defined within a `@layer` directive.
+
+[1m[31m>[39m[22m[90m 1 | [39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m utilities[33m;[39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|E:\vibe-coding\Tianshu\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!E:\vibe-coding\Tianshu\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!E:\vibe-coding\Tianshu\src\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./src/app/globals.css:1:1
+Syntax error: E:\vibe-coding\Tianshu\src\app\globals.css The `border-border` class does not exist. If `border-border` is a custom class, make sure it is defined within a `@layer` directive.
+
+[1m[31m>[39m[22m[90m 1 | [39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m utilities[33m;[39m
+ ⨯ ./src/app/globals.css:1:1
+Syntax error: E:\vibe-coding\Tianshu\src\app\globals.css The `border-border` class does not exist. If `border-border` is a custom class, make sure it is defined within a `@layer` directive.
+
+[1m[31m>[39m[22m[90m 1 | [39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m utilities[33m;[39m
+ ⨯ ./src/app/globals.css:1:1
+Syntax error: E:\vibe-coding\Tianshu\src\app\globals.css The `border-border` class does not exist. If `border-border` is a custom class, make sure it is defined within a `@layer` directive.
+
+[1m[31m>[39m[22m[90m 1 | [39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m utilities[33m;[39m
+ ⨯ ./src/app/globals.css:1:1
+Syntax error: E:\vibe-coding\Tianshu\src\app\globals.css The `border-border` class does not exist. If `border-border` is a custom class, make sure it is defined within a `@layer` directive.
+
+[1m[31m>[39m[22m[90m 1 | [39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m utilities[33m;[39m
+ ⨯ ./src/app/globals.css:1:1
+Syntax error: E:\vibe-coding\Tianshu\src\app\globals.css The `border-border` class does not exist. If `border-border` is a custom class, make sure it is defined within a `@layer` directive.
+
+[1m[31m>[39m[22m[90m 1 | [39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m utilities[33m;[39m
+ ⨯ ./src/app/globals.css:1:1
+Syntax error: E:\vibe-coding\Tianshu\src\app\globals.css The `border-border` class does not exist. If `border-border` is a custom class, make sure it is defined within a `@layer` directive.
+
+[1m[31m>[39m[22m[90m 1 | [39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m utilities[33m;[39m
+ ⨯ ./src/app/globals.css:1:1
+Syntax error: E:\vibe-coding\Tianshu\src\app\globals.css The `border-border` class does not exist. If `border-border` is a custom class, make sure it is defined within a `@layer` directive.
+
+[1m[31m>[39m[22m[90m 1 | [39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m utilities[33m;[39m
+ ⨯ ./src/app/globals.css:1:1
+Syntax error: E:\vibe-coding\Tianshu\src\app\globals.css The `border-border` class does not exist. If `border-border` is a custom class, make sure it is defined within a `@layer` directive.
+
+[1m[31m>[39m[22m[90m 1 | [39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m utilities[33m;[39m
+ ⨯ ./src/app/globals.css:1:1
+Syntax error: E:\vibe-coding\Tianshu\src\app\globals.css The `border-border` class does not exist. If `border-border` is a custom class, make sure it is defined within a `@layer` directive.
+
+[1m[31m>[39m[22m[90m 1 | [39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m utilities[33m;[39m
+ ⨯ ./src/app/globals.css:1:1
+Syntax error: E:\vibe-coding\Tianshu\src\app\globals.css The `border-border` class does not exist. If `border-border` is a custom class, make sure it is defined within a `@layer` directive.
+
+[1m[31m>[39m[22m[90m 1 | [39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m utilities[33m;[39m
+<w> [webpack.cache.PackFileCacheStrategy] Skipped not serializable cache item 'Compilation/modules|E:\vibe-coding\Tianshu\node_modules\next\dist\build\webpack\loaders\css-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[2]!E:\vibe-coding\Tianshu\node_modules\next\dist\build\webpack\loaders\postcss-loader\src\index.js??ruleSet[1].rules[14].oneOf[12].use[3]!E:\vibe-coding\Tianshu\src\app\globals.css': No serializer registered for PostCSSSyntaxError
+<w> while serializing webpack/lib/cache/PackFileCacheStrategy.PackContentItems -> webpack/lib/NormalModule -> webpack/lib/ModuleBuildError -> PostCSSSyntaxError
+ ⨯ ./src/app/globals.css:1:1
+Syntax error: E:\vibe-coding\Tianshu\src\app\globals.css The `border-border` class does not exist. If `border-border` is a custom class, make sure it is defined within a `@layer` directive.
+
+[1m[31m>[39m[22m[90m 1 | [39m[36m@tailwind[39m base[33m;[39m
+ [90m   | [39m[1m[31m^[39m[22m
+ [90m 2 | [39m[36m@tailwind[39m components[33m;[39m
+ [90m 3 | [39m[36m@tailwind[39m utilities[33m;[39m

@@ -3,8 +3,8 @@ import { buildPrompt } from "@/lib/prompt-builder";
 import { generateWithDeepSeek } from "@/lib/ai-client";
 import { prisma } from "@/lib/prisma";
 
-const VALID_PLATFORMS = ["xiaohongshu", "douyin", "gongzhonghao", "weibo", "bilibili", "zhihu"];
-const VALID_CONTENT_TYPES = ["tuwen", "short_video", "long_article", "title", "comment", "live_script"];
+const VALID_PLATFORMS = ["xiaohongshu", "douyin", "gongzhonghao"];
+const VALID_CONTENT_TYPES = ["tuwen", "short_video", "long_article"];
 
 export async function POST(request: NextRequest) {
   try {

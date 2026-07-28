@@ -20,17 +20,12 @@ const platforms = [
   { value: "douyin", label: "🎵 抖音" },
   { value: "gongzhonghao", label: "💬 公众号" },
   { value: "weibo", label: "🔵 微博" },
-  { value: "bilibili", label: "📺 B站" },
-  { value: "zhihu", label: "🤔 知乎" },
 ];
 
 const contentTypes = [
   { value: "tuwen", label: "图文文案" },
   { value: "short_video", label: "短视频脚本" },
   { value: "long_article", label: "长文" },
-  { value: "title", label: "爆款标题" },
-  { value: "comment", label: "评论区回复" },
-  { value: "live_script", label: "直播话术" },
 ];
 
 export default function Home() {
@@ -118,14 +113,6 @@ export default function Home() {
           <Sparkles className="w-6 h-6 text-indigo-600" />
           <h1 className="text-xl font-bold text-slate-900">灵枢</h1>
           <span className="text-sm text-slate-500">AI 自媒体内容生产</span>
-          <div className="ml-auto">
-            <Link href="/history">
-              <Button variant="ghost" size="sm">
-                <Clock className="w-4 h-4 mr-1" />
-                历史记录
-              </Button>
-            </Link>
-          </div>
         </div>
       </header>
 
