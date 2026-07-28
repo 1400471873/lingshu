@@ -1,0 +1,15 @@
+[
+  {
+    "sessionId": "05a95fc4-bb0c-492c-b129-5fe3642c72e2",
+    "starDomain": "qiming",
+    "objective": "(active)",
+    "updatedAt": 1785233261560,
+    "cognitiveState": {
+      "vigor": 0.744123,
+      "stability": 0.8284615384615386,
+      "season": "wuwei",
+      "convergencePrecision": 0.639643343979217,
+      "outputEfficiency": 0.000004193394536989953
+    }
+  }
+]

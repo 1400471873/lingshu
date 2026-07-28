@@ -1,0 +1,45 @@
+// Prisma schema for AI Content Generator
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// 平台内容模板
+model ContentTemplate {
+  id                 String   @id @default(cuid())
+  platform           String   // xiaohongshu | douyin | gongzhonghao | weibo
+  contentType        String   // tuwen | short_video | long_article
+  name               String   // 模板显示名
+  systemPrompt       String
+  userPromptTemplate String
+  temperature        Float    @default(0.8)
+
+  generations Generation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([platform, contentType])
+}
+
+// 生成记录
+model Generation {
+  id               String   @id @default(cuid())
+  templateId       String
+  topic            String   // 用户输入的主题
+  platform         String
+  contentType      String
+  rawPrompt        String   // 实际发送给 AI 的完整 prompt
+  rawResponse      String   // AI 原始返回
+  formattedContent String   @default("{}") // JSON 格式的结构化内容
+  temperature      Float    @default(0.8)
+
+  template ContentTemplate @relation(fields: [templateId], references: [id])
+
+  createdAt DateTime @default(now())
+}

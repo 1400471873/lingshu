@@ -1,0 +1,47 @@
+npm error code ERESOLVE
+npm error ERESOLVE could not resolve
+npm error
+npm error While resolving: tianshu@0.1.0
+npm error Found: @babel/core@7.29.7
+npm error node_modules/@babel/core
+npm error   peer @babel/core@"^7.0.0" from @babel/helper-create-class-features-plugin@7.29.7
+npm error   node_modules/@babel/helper-create-class-features-plugin
+npm error     @babel/helper-create-class-features-plugin@"^7.29.7" from @babel/plugin-transform-typescript@7.29.7
+npm error     node_modules/@babel/plugin-transform-typescript
+npm error       @babel/plugin-transform-typescript@"^7.29.7" from @babel/preset-typescript@7.29.7
+npm error       node_modules/@babel/preset-typescript
+npm error         @babel/preset-typescript@"^7.27.1" from shadcn@4.16.0
+npm error         node_modules/shadcn
+npm error       1 more (shadcn)
+npm error   peer @babel/core@"^7.0.0" from @babel/helper-module-transforms@7.29.7
+npm error   node_modules/@babel/helper-module-transforms
+npm error     @babel/helper-module-transforms@"^7.29.7" from @babel/core@7.29.7
+npm error     @babel/helper-module-transforms@"^7.29.7" from @babel/plugin-transform-modules-commonjs@7.29.7
+npm error     node_modules/@babel/plugin-transform-modules-commonjs
+npm error       @babel/plugin-transform-modules-commonjs@"^7.29.7" from @babel/preset-typescript@7.29.7
+npm error       node_modules/@babel/preset-typescript
+npm error         @babel/preset-typescript@"^7.27.1" from shadcn@4.16.0
+npm error         node_modules/shadcn
+npm error   7 more (@babel/helper-replace-supers, ...)
+npm error
+npm error Could not resolve dependency:
+npm error dev @vitejs/plugin-react@"*" from the root project
+npm error
+npm error Conflicting peer dependency: @babel/core@8.0.1
+npm error node_modules/@babel/core
+npm error   peer @babel/core@"^8.0.0" from @babel/plugin-transform-runtime@8.0.1
+npm error   node_modules/@babel/plugin-transform-runtime
+npm error     peerOptional @babel/plugin-transform-runtime@"^7.29.0 || ^8.0.0-rc.1" from @rolldown/plugin-babel@0.2.3
+npm error     node_modules/@rolldown/plugin-babel
+npm error       peerOptional @rolldown/plugin-babel@"^0.1.7 || ^0.2.0" from @vitejs/plugin-react@6.0.4
+npm error       node_modules/@vitejs/plugin-react
+npm error         dev @vitejs/plugin-react@"*" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error C:\Users\DELL\AppData\Local\npm-cache\_logs\2026-07-28T09_59_12_192Z-eresolve-report.txt
+npm error A complete log of this run can be found in: C:\Users\DELL\AppData\Local\npm-cache\_logs\2026-07-28T09_59_12_192Z-debug-0.log
