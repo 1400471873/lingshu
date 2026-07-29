@@ -4,6 +4,9 @@ import { generateWithDeepSeekStream } from "@/lib/ai-client";
 import { prisma } from "@/lib/prisma";
 import { ensureTables } from "@/lib/db-setup";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 let tablesEnsured = false;
 
 const VALID_PLATFORMS = ["xiaohongshu", "douyin", "gongzhonghao", "weibo", "bilibili", "zhihu"];
