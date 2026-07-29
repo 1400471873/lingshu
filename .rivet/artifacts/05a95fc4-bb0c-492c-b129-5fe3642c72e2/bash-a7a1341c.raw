@@ -1,3 +1,4 @@
+[cat > /e/vibe-coding/Tianshu/src/app/page.tsx << 'ENDOFFILE'
 "use client";
 
 import { useState, useEffect } from "react";
@@ -108,7 +109,7 @@ export default function Home() {
   const handleSaveEdit = async () => {
     if (!generationId) return;
     try {
-      const res = await fetch("/api/history/" + generationId, {
+      const res = await fetch(`/api/history/${generationId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: editContent }),
@@ -128,7 +129,7 @@ export default function Home() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = (topic.trim().slice(0, 20) || "灵枢文案") + ".md";
+    a.download = `${topic.trim().slice(0, 20) || "灵枢文案"}.md`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -354,3 +355,8 @@ export default function Home() {
     </div>
   );
 }
+ENDOFFILE
+echo "done"] exit=0 time=0.7s lines=2 — output complete
+
+/usr/bin/bash: line 216: warning: here-document at line 1 delimited by end-of-file (wanted `ENDOFFILE')
+── 执令（bash）

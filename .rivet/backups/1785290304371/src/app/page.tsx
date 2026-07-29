@@ -108,7 +108,7 @@ export default function Home() {
   const handleSaveEdit = async () => {
     if (!generationId) return;
     try {
-      const res = await fetch("/api/history/" + generationId, {
+      const res = await fetch(`/api/history/${generationId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: editContent }),
@@ -128,7 +128,7 @@ export default function Home() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = (topic.trim().slice(0, 20) || "灵枢文案") + ".md";
+    a.download = `${topic.trim().slice(0, 20) || "灵枢文案"}.md`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -212,145 +212,4 @@ export default function Home() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-card border-border/50">
-                    {platforms.map((p) => (
-                      <SelectItem key={p.value} value={p.value} className="text-sm">{p.label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-xs text-muted-foreground font-mono">
-                  $ type
-                </label>
-                <Select value={contentType} onValueChange={(v) => v && setContentType(v)}>
-                  <SelectTrigger className="bg-input/50 border-border/50 font-mono text-sm h-9">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-card border-border/50">
-                    {contentTypes.map((c) => (
-                      <SelectItem key={c.value} value={c.value} className="text-sm">{c.label}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {/* Model */}
-            <div className="space-y-1.5">
-              <label className="text-xs text-muted-foreground font-mono">
-                $ model
-              </label>
-              <Select value={model} onValueChange={(v) => v && setModel(v)}>
-                <SelectTrigger className="bg-input/50 border-border/50 font-mono text-sm h-9 w-full sm:w-52">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-card border-border/50">
-                  <SelectItem value="deepseek-chat" className="text-sm">DeepSeek V3</SelectItem>
-                  <SelectItem value="deepseek-reasoner" className="text-sm">DeepSeek R1</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Generate Button */}
-            <Button
-              onClick={handleGenerate}
-              disabled={!topic.trim() || loading}
-              className="w-full bg-primary/10 border border-primary/40 text-primary hover:bg-primary/20 hover:border-primary/60 glow-amber-sm transition-all duration-300 font-mono text-sm"
-              size="lg"
-            >
-              {loading ? (
-                <>
-                  <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-                  生成中...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-4 h-4 mr-2" />
-                  执行生成
-                </>
-              )}
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Error */}
-        {error && (
-          <div className="bg-destructive/10 border border-destructive/30 rounded-lg px-4 py-3 text-destructive text-sm font-mono">
-            <span className="text-destructive/70">[ERROR]</span> {error}
-          </div>
-        )}
-
-        {/* === RESULT === */}
-        {result && (
-          <Card className="bg-card/80 border-border/50 backdrop-blur-sm">
-            <CardHeader className="flex flex-row items-center justify-between pb-3">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <span className="text-primary font-mono text-xs">&gt;_</span>
-                生成结果
-                <span className="text-muted-foreground font-normal text-xs ml-2">
-                  {platformLabel} · {ctLabel}
-                </span>
-              </CardTitle>
-              <div className="flex gap-1">
-                {isEditing ? (
-                  <>
-                    <Button variant="ghost" size="sm" onClick={handleSaveEdit} className="h-8 text-xs text-primary hover:text-primary hover:bg-primary/10">
-                      <Check className="w-3.5 h-3.5 mr-1" />保存
-                    </Button>
-                    <Button variant="ghost" size="sm" onClick={handleCancelEdit} className="h-8 text-xs text-muted-foreground">
-                      <X className="w-3.5 h-3.5 mr-1" />取消
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Button variant="ghost" size="sm" onClick={handleStartEdit} className="h-8 text-xs text-muted-foreground hover:text-foreground">
-                      <Pencil className="w-3.5 h-3.5 mr-1" />编辑
-                    </Button>
-                    <Button variant="ghost" size="sm" onClick={handleCopy} className="h-8 text-xs text-muted-foreground hover:text-foreground">
-                      <Copy className="w-3.5 h-3.5 mr-1" />{copied ? "已复制" : "复制"}
-                    </Button>
-                    <Button variant="ghost" size="sm" onClick={handleExportMarkdown} className="h-8 text-xs text-muted-foreground hover:text-foreground">
-                      <Download className="w-3.5 h-3.5 mr-1" />导出
-                    </Button>
-                  </>
-                )}
-              </div>
-            </CardHeader>
-            <Separator className="bg-border/50" />
-            <CardContent className="py-5">
-              {isEditing ? (
-                <Textarea
-                  value={editContent}
-                  onChange={(e) => setEditContent(e.target.value)}
-                  className="min-h-64 font-mono text-sm bg-input/50 border-border/50"
-                />
-              ) : (
-                <div className="font-mono text-sm leading-relaxed whitespace-pre-wrap text-foreground/90 bg-input/20 rounded-lg p-4 border border-border/30 max-h-[600px] overflow-y-auto">
-                  {result}
-                  {loading && <span className="cursor-blink" />}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Empty state while generating */}
-        {loading && !result && (
-          <Card className="bg-card/80 border-border/50 backdrop-blur-sm">
-            <CardContent className="py-12 text-center">
-              <div className="inline-flex items-center gap-2 text-muted-foreground font-mono text-sm">
-                <RefreshCw className="w-4 h-4 animate-spin text-primary" />
-                生成中<span className="cursor-blink" />
-              </div>
-            </CardContent>
-          </Card>
-        )}
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t border-border/50 py-6 text-center text-xs text-muted-foreground font-mono">
-        Ctrl + Enter 快速生成 · 灵枢 v1.0
-      </footer>
-    </div>
-  );
-}
+                    {platforms.map((p)

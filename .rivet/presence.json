@@ -3,13 +3,13 @@
     "sessionId": "05a95fc4-bb0c-492c-b129-5fe3642c72e2",
     "starDomain": "qiming",
     "objective": "(active)",
-    "updatedAt": 1785234565914,
+    "updatedAt": 1785290359483,
     "cognitiveState": {
-      "vigor": 0.966872,
-      "stability": 0.7942857142857144,
+      "vigor": 0.998909,
+      "stability": 0.840418,
       "season": "wuwei",
-      "convergencePrecision": 0.7494719549558135,
-      "outputEfficiency": 3.407064022429891e-10
+      "convergencePrecision": 0.7194719548830993,
+      "outputEfficiency": 2.5008260965930362e-12
     }
   }
 ]
