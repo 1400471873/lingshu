@@ -1,27 +1,18 @@
 import { NextRequest } from "next/server";
 import { buildPrompt } from "@/lib/prompt-builder";
 import { generateWithDeepSeekStream } from "@/lib/ai-client";
-import { prisma } from "@/lib/prisma";
-import { ensureTables } from "@/lib/db-setup";
+import { getTemplate, createGeneration } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
-
-let tablesEnsured = false;
 
 const VALID_PLATFORMS = ["xiaohongshu", "douyin", "gongzhonghao", "weibo", "bilibili", "zhihu"];
 const VALID_CONTENT_TYPES = ["tuwen", "short_video", "long_article", "title", "comment", "live_script"];
 
 export async function POST(request: NextRequest) {
-  if (!tablesEnsured) {
-    await ensureTables();
-    tablesEnsured = true;
-  }
-
   const body = await request.json();
   const { topic, platform, contentType, model = "deepseek-chat" } = body;
 
-  // 参数校验
   if (!topic || typeof topic !== "string" || topic.trim().length === 0) {
     return new Response(JSON.stringify({ error: "请输入主题" }), { status: 400 });
   }
@@ -34,7 +25,6 @@ export async function POST(request: NextRequest) {
 
   const trimmedTopic = topic.trim();
 
-  // 1. 构建 prompt
   let systemPrompt: string, userPrompt: string, temperature: number;
   try {
     const built = await buildPrompt(platform, contentType, trimmedTopic);
@@ -48,7 +38,6 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // 2. SSE 流式响应
   const encoder = new TextEncoder();
   let fullContent = "";
 
@@ -56,46 +45,31 @@ export async function POST(request: NextRequest) {
     async start(controller) {
       try {
         const gen = generateWithDeepSeekStream(systemPrompt, userPrompt, temperature, model);
-
         for await (const chunk of gen) {
           fullContent += chunk;
-          const data = JSON.stringify({ delta: chunk });
-          controller.enqueue(encoder.encode(`data: ${data}\n\n`));
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ delta: chunk })}\n\n`));
         }
 
-        // 3. 存入数据库
-        const template = await prisma.contentTemplate.findUnique({
-          where: { platform_contentType: { platform, contentType } },
+        const template = await getTemplate(platform, contentType);
+        const generation = await createGeneration({
+          templateId: (template as any)?.id || "unknown",
+          topic: trimmedTopic,
+          platform,
+          contentType,
+          rawPrompt: `System: ${systemPrompt}\n\nUser: ${userPrompt}`,
+          rawResponse: fullContent,
+          formattedContent: JSON.stringify({ body: fullContent }),
+          temperature,
         });
 
-        const generation = await prisma.generation.create({
-          data: {
-            templateId: template!.id,
-            topic: trimmedTopic,
-            platform,
-            contentType,
-            rawPrompt: `System: ${systemPrompt}\n\nUser: ${userPrompt}`,
-            rawResponse: fullContent,
-            formattedContent: JSON.stringify({ body: fullContent }),
-            temperature,
-          },
-        });
-
-        // 发送元数据事件
-        const meta = JSON.stringify({
-          done: true,
-          id: generation.id,
-          topic: generation.topic,
-          platform: generation.platform,
-          contentType: generation.contentType,
-        });
-        controller.enqueue(encoder.encode(`data: ${meta}\n\n`));
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify({
+          done: true, id: generation.id, topic: generation.topic,
+          platform: generation.platform, contentType: generation.contentType,
+        })}\n\n`));
         controller.close();
       } catch (err) {
-        const errorMsg =
-          err instanceof Error ? err.message : "生成失败，请重试";
-        const data = JSON.stringify({ error: errorMsg });
-        controller.enqueue(encoder.encode(`data: ${data}\n\n`));
+        const msg = err instanceof Error ? err.message : "生成失败";
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify({ error: msg })}\n\n`));
         controller.close();
       }
     },

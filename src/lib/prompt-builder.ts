@@ -1,4 +1,4 @@
-import { prisma } from "./prisma";
+import { getTemplate, ensureTables } from "./db";
 
 export interface BuiltPrompt {
   systemPrompt: string;
@@ -6,20 +6,13 @@ export interface BuiltPrompt {
   temperature: number;
 }
 
-/**
- * 根据平台和内容类型构建 prompt。
- * 从数据库读取模板，用 topic 替换占位符 {{topic}}。
- */
 export async function buildPrompt(
   platform: string,
   contentType: string,
   topic: string
 ): Promise<BuiltPrompt> {
-  const template = await prisma.contentTemplate.findUnique({
-    where: {
-      platform_contentType: { platform, contentType },
-    },
-  });
+  await ensureTables();
+  const template = await getTemplate(platform, contentType);
 
   if (!template) {
     throw new Error(
@@ -27,14 +20,15 @@ export async function buildPrompt(
     );
   }
 
-  const userPrompt = template.userPromptTemplate.replace(
+  const t = template as any;
+  const userPrompt = (t.userPromptTemplate as string).replace(
     /\{\{topic\}\}/g,
     topic
   );
 
   return {
-    systemPrompt: template.systemPrompt,
+    systemPrompt: t.systemPrompt as string,
     userPrompt,
-    temperature: template.temperature,
+    temperature: t.temperature as number,
   };
 }
