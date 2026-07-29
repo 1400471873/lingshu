@@ -90,7 +90,7 @@ export default function HistoryPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="border-b border-border/50 bg-card/60 backdrop-blur-md sticky top-0 z-10">
+      <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center gap-3">
           <Link href="/">
             <Button variant="ghost" size="icon">
@@ -107,7 +107,7 @@ export default function HistoryPage() {
         {/* Search */}
         <div className="flex gap-2">
           <Input
-            className="bg-input/50 border-border/50"
+            className="bg-slate-800/50 border-slate-800"
             placeholder="搜索主题..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -130,7 +130,7 @@ export default function HistoryPage() {
         ) : (
           <div className="space-y-3">
             {items.map((item) => (
-                <Card key={item.id} className="bg-card/80 border-border/50 hover:border-primary/30 transition-all">
+                <Card key={item.id} className="bg-slate-900/80 border-slate-800 hover:border-amber-500/30 transition-all">
                 <CardContent className="py-4">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
@@ -145,7 +145,7 @@ export default function HistoryPage() {
                           {formatDate(item.createdAt)}
                         </span>
                       </div>
-                      <h3 className="font-medium text-foreground truncate">
+                      <h3 className="font-medium text-slate-100 truncate">
                         {item.topic}
                       </h3>
                       {item.preview && (

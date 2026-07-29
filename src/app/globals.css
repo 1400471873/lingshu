@@ -3,77 +3,35 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 93%;
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 93%;
-    --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 93%;
-    --primary: 32 95% 55%;
-    --primary-foreground: 0 0% 4%;
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 85%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 55%;
-    --accent: 32 95% 55%;
-    --accent-foreground: 0 0% 4%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 93%;
-    --border: 0 0% 15%;
-    --input: 0 0% 12%;
-    --ring: 32 95% 55%;
-    --radius: 0.5rem;
-    --glow: 32 95% 55%;
-  }
-
-  * {
-    @apply border-border;
-  }
-
   body {
-    @apply bg-background text-foreground antialiased;
-    font-family: var(--font-sans), system-ui, sans-serif;
+    @apply bg-slate-950 text-slate-100 antialiased;
   }
 }
 
-@layer utilities {
-  /* 琥珀霓虹发光 */
-  .glow-amber {
-    box-shadow: 0 0 20px hsl(var(--glow) / 0.15),
-      0 0 40px hsl(var(--glow) / 0.05);
-  }
-  .glow-amber-sm {
-    box-shadow: 0 0 10px hsl(var(--glow) / 0.2);
-  }
-  .glow-text {
-    text-shadow: 0 0 12px hsl(var(--glow) / 0.4),
-      0 0 24px hsl(var(--glow) / 0.15);
-  }
-
-  /* 终端光标闪烁 */
-  .cursor-blink::after {
-    content: "▊";
-    animation: blink 1s step-end infinite;
-    color: hsl(var(--glow));
-  }
-  @keyframes blink {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
-  }
-
-  /* 细网格背景 */
-  .bg-grid {
-    background-image: linear-gradient(
-        hsl(var(--border) / 0.3) 1px,
-        transparent 1px
-      ),
-      linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
-    background-size: 48px 48px;
-  }
+/* Markdown 渲染样式 */
+@layer components {
+  .prose-result h1 { @apply text-xl font-bold text-amber-400 mt-6 mb-3; }
+  .prose-result h2 { @apply text-lg font-semibold text-slate-200 mt-5 mb-2; }
+  .prose-result h3 { @apply text-base font-medium text-slate-300 mt-4 mb-2; }
+  .prose-result p { @apply my-2 leading-relaxed; }
+  .prose-result ul { @apply list-disc pl-5 my-2 space-y-1; }
+  .prose-result ol { @apply list-decimal pl-5 my-2 space-y-1; }
+  .prose-result li { @apply text-slate-300; }
+  .prose-result strong { @apply font-semibold text-amber-300; }
+  .prose-result em { @apply italic text-slate-300; }
+  .prose-result code { @apply bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded text-sm font-mono; }
+  .prose-result pre { @apply bg-slate-900 border border-slate-800 rounded-lg p-4 my-3 overflow-x-auto; }
+  .prose-result pre code { @apply bg-transparent text-slate-300 p-0; }
+  .prose-result blockquote { @apply border-l-2 border-amber-500/50 pl-4 italic text-slate-400 my-3; }
+  .prose-result a { @apply text-amber-400 underline underline-offset-2 hover:text-amber-300; }
+  .prose-result hr { @apply border-slate-800 my-6; }
+  .prose-result table { @apply w-full border-collapse my-3; }
+  .prose-result th { @apply border border-slate-700 bg-slate-900 px-3 py-2 text-left text-sm font-medium; }
+  .prose-result td { @apply border border-slate-800 px-3 py-2 text-sm; }
 }
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { @apply bg-slate-700 rounded-full; }
+::-webkit-scrollbar-thumb:hover { @apply bg-slate-600; }

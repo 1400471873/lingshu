@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 93%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 93%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 93%;
+    --primary: 32 95% 55%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 85%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 55%;
+    --accent: 32 95% 55%;
+    --accent-foreground: 0 0% 4%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 93%;
+    --border: 0 0% 15%;
+    --input: 0 0% 12%;
+    --ring: 32 95% 55%;
+    --radius: 0.5rem;
+    --glow: 32 95% 55%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  /* 琥珀霓虹发光 */
+  .glow-amber {
+    box-shadow: 0 0 20px hsl(var(--glow) / 0.15),
+      0 0 40px hsl(var(--glow) / 0.05);
+  }
+  .glow-amber-sm {
+    box-shadow: 0 0 10px hsl(var(--glow) / 0.2);
+  }
+  .glow-text {
+    text-shadow: 0 0 12px hsl(var(--glow) / 0.4),
+      0 0 24px hsl(var(--glow) / 0.15);
+  }
+
+  /* 终端光标闪烁 */
+  .cursor-blink::after {
+    content: "▊";
+    animation: blink 1s step-end infinite;
+    color: hsl(var(--glow));
+  }
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* 细网格背景 */
+  .bg-grid {
+    background-image: linear-gradient(
+        hsl(var(--border) / 0.3) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+}

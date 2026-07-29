@@ -132,3 +132,47 @@ Import trace for requested module:
  ✓ Compiled in 765ms (477 modules)
  ✓ Compiled in 474ms (477 modules)
  ✓ Compiled in 557ms (477 modules)
+ ✓ Compiled in 1651ms (477 modules)
+ ✓ Compiled in 773ms (477 modules)
+ ✓ Compiled in 216ms (477 modules)
+ ⨯ ./src/app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4mE:\vibe-coding\Tianshu\src\app\page.tsx[0m:118:1]
+ [2m118[0m |   if (!mounted) return null;
+ [2m119[0m | 
+ [2m120[0m |   return (
+ [2m121[0m |     <div className="h-screen flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m122[0m |       {/* ===== HEADER ===== */}
+ [2m123[0m |       <header className="h-12 border-b border-slate-800 bg-slate-900/80 backdrop-blur flex items-center px-4 shrink-0 z-10">
+ [2m124[0m |         <Button variant="ghost" size="sm" className="text-slate-400 hover:text-slate-200" onClick={() => setSidebarOpen(!sidebarOpen)}>
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.tsx
+ ⨯ ./src/app/page.tsx
+Error: 
+  [31mx[0m Unexpected token `div`. Expected jsx identifier
+     ,-[[36;1;4mE:\vibe-coding\Tianshu\src\app\page.tsx[0m:118:1]
+ [2m118[0m |   if (!mounted) return null;
+ [2m119[0m | 
+ [2m120[0m |   return (
+ [2m121[0m |     <div className="h-screen flex flex-col overflow-hidden">
+     : [31;1m     ^^^[0m
+ [2m122[0m |       {/* ===== HEADER ===== */}
+ [2m123[0m |       <header className="h-12 border-b border-slate-800 bg-slate-900/80 backdrop-blur flex items-center px-4 shrink-0 z-10">
+ [2m124[0m |         <Button variant="ghost" size="sm" className="text-slate-400 hover:text-slate-200" onClick={() => setSidebarOpen(!sidebarOpen)}>
+     `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./src/app/page.tsx
+ ✓ Compiled in 6.8s (575 modules)
+ ✓ Compiled in 821ms (575 modules)
+ ✓ Compiled in 1075ms (575 modules)
