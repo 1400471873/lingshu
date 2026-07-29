@@ -1,0 +1,25 @@
+
+> tianshu@0.1.0 dev
+> next dev -H 0.0.0.0 -p 3000
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Network:      http://0.0.0.0:3000
+  - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 3.6s
+ ○ Compiling / ...
+ ✓ Compiled / in 7.1s (1179 modules)
+ GET / 200 in 7824ms
+ ✓ Compiled in 833ms (575 modules)
+ ⚠ Cross origin request detected from 192.168.21.178 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 3.1s (627 modules)
+ GET /favicon.ico 200 in 3193ms
+ GET /favicon.ico 200 in 7ms
+   Reload env: .env.local
+ ✓ Compiled in 989ms (1156 modules)
+ ✓ Compiled in 478ms (575 modules)
+ ✓ Compiled in 434ms (575 modules)

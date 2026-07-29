@@ -2,19 +2,11 @@ import { NextRequest } from "next/server";
 import { buildPrompt } from "@/lib/prompt-builder";
 import { generateWithDeepSeekStream } from "@/lib/ai-client";
 import { prisma } from "@/lib/prisma";
-import { ensureTables } from "@/lib/db-setup";
-
-let tablesEnsured = false;
 
 const VALID_PLATFORMS = ["xiaohongshu", "douyin", "gongzhonghao", "weibo", "bilibili", "zhihu"];
 const VALID_CONTENT_TYPES = ["tuwen", "short_video", "long_article", "title", "comment", "live_script"];
 
 export async function POST(request: NextRequest) {
-  if (!tablesEnsured) {
-    await ensureTables();
-    tablesEnsured = true;
-  }
-
   const body = await request.json();
   const { topic, platform, contentType, model = "deepseek-chat" } = body;
 

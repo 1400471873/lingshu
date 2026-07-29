@@ -10,11 +10,6 @@ const VALID_PLATFORMS = ["xiaohongshu", "douyin", "gongzhonghao", "weibo", "bili
 const VALID_CONTENT_TYPES = ["tuwen", "short_video", "long_article", "title", "comment", "live_script"];
 
 export async function POST(request: NextRequest) {
-  if (!tablesEnsured) {
-    await ensureTables();
-    tablesEnsured = true;
-  }
-
   const body = await request.json();
   const { topic, platform, contentType, model = "deepseek-chat" } = body;
 
