@@ -1,0 +1,10 @@
+npm warn EBADENGINE Unsupported engine {
+npm warn EBADENGINE   package: 'tianshu-tui@2.25.0',
+npm warn EBADENGINE   required: { node: '>=24' },
+npm warn EBADENGINE   current: { node: 'v22.20.0', npm: '10.9.3' }
+npm warn EBADENGINE }
+
+added 15 packages in 10s
+
+355 packages are looking for funding
+  run `npm fund` for details

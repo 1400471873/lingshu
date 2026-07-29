@@ -111,3 +111,4 @@ Import trace for requested module:
  ○ Compiling /api/history/[id] ...
  ✓ Compiled /api/history/[id] in 1193ms (58 modules)
  GET /api/history/cms5fu7y700017tapz2ltl56v 200 in 2455ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: unexpected end of file
