@@ -5,7 +5,7 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createPrisma(): PrismaClient {
-  const dbUrl = process.env.DATABASE_URL || "file:./dev.db";
+  const dbUrl = process.env.DATABASE_URL || `file:${process.env.VERCEL ? "/tmp" : "."}/dev.db`;
 
   if (dbUrl.startsWith("libsql://")) {
     try {
