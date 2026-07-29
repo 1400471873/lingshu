@@ -102,3 +102,12 @@ Import trace for requested module:
  GET / 200 in 4088ms
  ✓ Compiled /history in 336ms (668 modules)
  GET /history 200 in 1011ms
+ ✓ Compiled in 1494ms (646 modules)
+ ✓ Compiled in 956ms (647 modules)
+ ✓ Compiled in 1036ms (647 modules)
+ ✓ Compiled in 759ms (647 modules)
+ ✓ Compiled in 747ms (647 modules)
+ ✓ Compiled in 569ms (647 modules)
+ ○ Compiling /api/history/[id] ...
+ ✓ Compiled /api/history/[id] in 1193ms (58 modules)
+ GET /api/history/cms5fu7y700017tapz2ltl56v 200 in 2455ms

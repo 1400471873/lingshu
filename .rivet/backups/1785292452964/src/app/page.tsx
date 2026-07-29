@@ -42,7 +42,7 @@ export default function Home() {
   const [error, setError] = useState("");
   const [generationId, setGenerationId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState("");
   const [mounted, setMounted] = useState(false);
@@ -158,7 +158,7 @@ export default function Home() {
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       {/* HEADER */}
-      <header className="h-12 border-b border-slate-800 bg-slate-900/80 backdrop-blur flex items-center px-4 shrink-0 z-30">
+      <header className="h-12 border-b border-slate-800 bg-slate-900/80 backdrop-blur flex items-center px-4 shrink-0 z-10">
         <Button
           variant="ghost"
           size="sm"
@@ -183,21 +183,15 @@ export default function Home() {
 
       {/* BODY */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Overlay */}
-        {sidebarOpen && (
-          <div
-            className="fixed inset-0 bg-black/60 z-10 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
-
         {/* SIDEBAR */}
         <aside
-          className={`${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-          } fixed lg:relative inset-y-0 left-0 z-20 lg:z-0 w-56 border-r border-slate-800 bg-slate-950 lg:bg-slate-900/50 overflow-y-auto shrink-0 transition-transform duration-200`}
+          className={
+            sidebarOpen
+              ? "w-56 border-r border-slate-800 bg-slate-900/50 overflow-y-auto shrink-0 transition-all duration-200"
+              : "w-0 border-r border-slate-800 bg-slate-900/50 overflow-y-auto shrink-0 transition-all duration-200"
+          }
         >
-          <div className="p-3 space-y-5 pt-14 lg:pt-3">
+          <div className="p-3 space-y-5" style={{ display: sidebarOpen ? "block" : "none" }}>
             {/* Platform */}
             <div>
               <h3 className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2 px-1">平台</h3>

@@ -1,38 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function GET(
-  _request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const record = await prisma.generation.findUnique({
-      where: { id: params.id },
-    });
-    if (!record) {
-      return NextResponse.json({ error: "记录不存在" }, { status: 404 });
-    }
-
-    let content = record.rawResponse || "";
-    try {
-      const parsed = JSON.parse(record.formattedContent || "{}");
-      content = parsed.body || record.rawResponse || "";
-    } catch { /* use rawResponse */ }
-
-    return NextResponse.json({
-      id: record.id,
-      topic: record.topic,
-      platform: record.platform,
-      contentType: record.contentType,
-      content,
-      createdAt: record.createdAt,
-    });
-  } catch (error) {
-    console.error("GET /api/history/[id] error:", error);
-    return NextResponse.json({ error: "获取失败" }, { status: 500 });
-  }
-}
-
 export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }

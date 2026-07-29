@@ -382,3 +382,9 @@ Import trace for requested module:
 <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'E:\vibe-coding\Tianshu\.next\cache\webpack\client-development\0.pack.gz_' -> 'E:\vibe-coding\Tianshu\.next\cache\webpack\client-development\0.pack.gz'
  ✓ Compiled in 1176ms (760 modules)
  ✓ Compiled in 1032ms (760 modules)
+ ✓ Compiled in 4.1s (760 modules)
+ ✓ Compiled in 579ms (760 modules)
+ ✓ Compiled in 647ms (760 modules)
+ ✓ Compiled in 774ms (760 modules)
+ ✓ Compiled in 527ms (760 modules)
+ ✓ Compiled in 838ms (760 modules)
