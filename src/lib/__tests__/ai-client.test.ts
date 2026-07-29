@@ -25,7 +25,8 @@ describe("generateWithDeepSeek", () => {
     expect(result).toBe("这是生成的文案内容");
     expect(global.fetch).toHaveBeenCalledTimes(1);
 
-    const callArgs = (global.fetch as any).mock.calls[0];
+    const callArgs = (// eslint-disable-next-line @typescript-eslint/no-explicit-any
+    global.fetch as any).mock.calls[0];
     const body = JSON.parse(callArgs[1].body);
     expect(body.model).toBe("deepseek-chat");
     expect(body.messages).toHaveLength(2);

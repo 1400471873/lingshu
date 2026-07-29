@@ -28,7 +28,8 @@ describe("buildPrompt", () => {
       temperature: 0.8,
     };
 
-    (prisma.contentTemplate.findUnique as any).mockResolvedValue(mockTemplate);
+    (// eslint-disable-next-line @typescript-eslint/no-explicit-any
+    prisma.contentTemplate.findUnique as any).mockResolvedValue(mockTemplate);
 
     const result = await buildPrompt("xiaohongshu", "tuwen", "减脂期怎么吃");
 
@@ -38,7 +39,8 @@ describe("buildPrompt", () => {
   });
 
   it("应在模板不存在时抛出错误", async () => {
-    (prisma.contentTemplate.findUnique as any).mockResolvedValue(null);
+    (// eslint-disable-next-line @typescript-eslint/no-explicit-any
+    prisma.contentTemplate.findUnique as any).mockResolvedValue(null);
 
     await expect(
       buildPrompt("unknown", "unknown", "test")
@@ -56,7 +58,8 @@ describe("buildPrompt", () => {
       temperature: 0.8,
     };
 
-    (prisma.contentTemplate.findUnique as any).mockResolvedValue(mockTemplate);
+    (// eslint-disable-next-line @typescript-eslint/no-explicit-any
+    prisma.contentTemplate.findUnique as any).mockResolvedValue(mockTemplate);
 
     const result = await buildPrompt("xiaohongshu", "tuwen", "减脂");
 

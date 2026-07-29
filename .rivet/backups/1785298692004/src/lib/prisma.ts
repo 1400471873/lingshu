@@ -7,13 +7,11 @@ function createPrisma() {
   const turboToken = process.env.TURSO_AUTH_TOKEN;
 
   if (turboUrl?.startsWith("libsql://") && turboToken) {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    // Turso 远程数据库
     const { createClient } = require("@libsql/client");
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { PrismaLibSql } = require("@prisma/adapter-libsql");
     const libsql = createClient({ url: turboUrl, authToken: turboToken });
     const adapter = new PrismaLibSql(libsql);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return new PrismaClient({ adapter } as any);
   }
 
