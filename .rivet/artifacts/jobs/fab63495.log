@@ -1,0 +1,53 @@
+
+> tianshu@0.1.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use, trying 3001 instead.
+ ⚠ Port 3001 is in use, trying 3002 instead.
+ ⚠ Port 3002 is in use, trying 3003 instead.
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3003
+  - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 3.6s
+ ○ Compiling / ...
+ ✓ Compiled / in 10s (974 modules)
+ GET / 200 in 10466ms
+ ✓ Compiled in 697ms (477 modules)
+ GET / 200 in 42ms
+ ○ Compiling /history ...
+ ✓ Compiled /history in 2.1s (1009 modules)
+ GET /history 200 in 4368ms
+ ✓ Compiled /api/generate in 267ms (526 modules)
+ POST /api/generate 200 in 4345ms
+ ✓ Compiled /api/history in 493ms (552 modules)
+ GET /api/history 200 in 599ms
+ ✓ Compiled in 2.3s (505 modules)
+ ✓ Compiled in 911ms (505 modules)
+ ✓ Compiled in 707ms (505 modules)
+ ✓ Compiled in 578ms (505 modules)
+ ✓ Compiled in 445ms (505 modules)
+ ✓ Compiled in 703ms (505 modules)
+ ✓ Compiled in 491ms (505 modules)
+ ✓ Compiled in 554ms (505 modules)
+ ✓ Compiled in 676ms (505 modules)
+ ✓ Compiled in 329ms (505 modules)
+ ✓ Compiled in 928ms (505 modules)
+ ✓ Compiled in 514ms (505 modules)
+ ✓ Compiled in 259ms (505 modules)
+ ✓ Compiled in 690ms (505 modules)
+ ✓ Compiled in 393ms (505 modules)
+ ✓ Compiled in 622ms (505 modules)
+ ✓ Compiled in 351ms (505 modules)
+ ✓ Compiled in 396ms (505 modules)
+ ✓ Compiled in 252ms (505 modules)
+ ✓ Compiled in 349ms (505 modules)
+ ✓ Compiled in 332ms (505 modules)
+ ✓ Compiled in 573ms (505 modules)
+ ✓ Compiled in 598ms (505 modules)
+ ✓ Compiled in 636ms (505 modules)
+ ✓ Compiled / in 287ms (488 modules)
+ GET / 200 in 2606ms
+ ✓ Compiled /history in 402ms (518 modules)
+ GET /history 200 in 2632ms

@@ -107,7 +107,6 @@ export default function HistoryPage() {
         {/* Search */}
         <div className="flex gap-2">
           <Input
-            className="bg-input/50 border-border/50"
             placeholder="搜索主题..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}

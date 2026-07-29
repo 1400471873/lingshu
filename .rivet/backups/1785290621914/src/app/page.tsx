@@ -205,7 +205,7 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label className="text-xs text-muted-foreground font-mono">
-              目标平台
+                  $ platform
                 </label>
                 <Select value={platform} onValueChange={(v) => v && setPlatform(v)}>
                   <SelectTrigger className="bg-input/50 border-border/50 font-mono text-sm h-9">
@@ -220,7 +220,7 @@ export default function Home() {
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs text-muted-foreground font-mono">
-              内容类型
+                  $ type
                 </label>
                 <Select value={contentType} onValueChange={(v) => v && setContentType(v)}>
                   <SelectTrigger className="bg-input/50 border-border/50 font-mono text-sm h-9">
@@ -238,7 +238,7 @@ export default function Home() {
             {/* Model */}
             <div className="space-y-1.5">
               <label className="text-xs text-muted-foreground font-mono">
-              AI 模型
+                $ model
               </label>
               <Select value={model} onValueChange={(v) => v && setModel(v)}>
                 <SelectTrigger className="bg-input/50 border-border/50 font-mono text-sm h-9 w-full sm:w-52">

@@ -238,7 +238,7 @@ export default function Home() {
             {/* Model */}
             <div className="space-y-1.5">
               <label className="text-xs text-muted-foreground font-mono">
-              AI 模型
+                $ model
               </label>
               <Select value={model} onValueChange={(v) => v && setModel(v)}>
                 <SelectTrigger className="bg-input/50 border-border/50 font-mono text-sm h-9 w-full sm:w-52">

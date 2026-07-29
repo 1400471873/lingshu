@@ -107,7 +107,6 @@ export default function HistoryPage() {
         {/* Search */}
         <div className="flex gap-2">
           <Input
-            className="bg-input/50 border-border/50"
             placeholder="搜索主题..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -130,12 +129,12 @@ export default function HistoryPage() {
         ) : (
           <div className="space-y-3">
             {items.map((item) => (
-                <Card key={item.id} className="bg-card/80 border-border/50 hover:border-primary/30 transition-all">
+              <Card key={item.id} className="hover:shadow-md transition-shadow">
                 <CardContent className="py-4">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm text-muted-foreground">
+                        <span className="text-sm text-slate-500">
                           {platformLabels[item.platform] || item.platform}
                         </span>
                         <span className="text-xs text-muted-foreground">
@@ -145,11 +144,11 @@ export default function HistoryPage() {
                           {formatDate(item.createdAt)}
                         </span>
                       </div>
-                      <h3 className="font-medium text-foreground truncate">
+                      <h3 className="font-medium text-slate-900 truncate">
                         {item.topic}
                       </h3>
                       {item.preview && (
-                        <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                        <p className="text-sm text-slate-500 mt-1 line-clamp-2">
                           {item.preview}
                         </p>
                       )}

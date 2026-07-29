@@ -98,8 +98,8 @@ export default function HistoryPage() {
             </Button>
           </Link>
           <Sparkles className="w-6 h-6 text-indigo-600" />
-          <h1 className="text-xl font-bold">灵枢</h1>
-          <span className="text-sm text-muted-foreground">历史记录</span>
+          <h1 className="text-xl font-bold text-slate-900">灵枢</h1>
+          <span className="text-sm text-slate-500">历史记录</span>
         </div>
       </header>
 
@@ -107,7 +107,6 @@ export default function HistoryPage() {
         {/* Search */}
         <div className="flex gap-2">
           <Input
-            className="bg-input/50 border-border/50"
             placeholder="搜索主题..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -121,35 +120,35 @@ export default function HistoryPage() {
         {/* List */}
         {loading ? (
           <div className="flex justify-center py-12">
-            <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+            <Loader2 className="w-6 h-6 animate-spin text-slate-400" />
           </div>
         ) : items.length === 0 ? (
-          <div className="text-center py-12 text-muted-foreground">
+          <div className="text-center py-12 text-slate-400">
             {search ? "没有匹配的记录" : "暂无生成记录，去首页创作吧"}
           </div>
         ) : (
           <div className="space-y-3">
             {items.map((item) => (
-                <Card key={item.id} className="bg-card/80 border-border/50 hover:border-primary/30 transition-all">
+              <Card key={item.id} className="hover:shadow-md transition-shadow">
                 <CardContent className="py-4">
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm text-muted-foreground">
+                        <span className="text-sm text-slate-500">
                           {platformLabels[item.platform] || item.platform}
                         </span>
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-slate-400">
                           {typeLabels[item.contentType] || item.contentType}
                         </span>
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-slate-400">
                           {formatDate(item.createdAt)}
                         </span>
                       </div>
-                      <h3 className="font-medium text-foreground truncate">
+                      <h3 className="font-medium text-slate-900 truncate">
                         {item.topic}
                       </h3>
                       {item.preview && (
-                        <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                        <p className="text-sm text-slate-500 mt-1 line-clamp-2">
                           {item.preview}
                         </p>
                       )}
@@ -157,7 +156,7 @@ export default function HistoryPage() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="text-muted-foreground hover:text-red-500 shrink-0"
+                      className="text-slate-400 hover:text-red-500 shrink-0"
                       onClick={() => handleDelete(item.id)}
                       disabled={deleting === item.id}
                     >
