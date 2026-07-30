@@ -175,7 +175,7 @@ export default function Home() {
     if (!styleName.trim() || !styleSamples.trim()) return;
     setStyleLoading(true);
     const samples = styleSamples.split("\n").filter(s => s.trim());
-    if (samples.length < 3) { setError("请至少提供3条文案样本"); setStyleLoading(false); return; }
+    if (samples.length < 1) { setError("请至少提供1条文案样本"); setStyleLoading(false); return; }
     try {
       // 先提取风格画像
       const extractRes = await fetch("/api/style/extract", {
@@ -205,8 +205,8 @@ export default function Home() {
   };
 
   const handleAnalyze = async () => {
-    if (!analyzeInput.trim() || analyzeInput.trim().length < 50) {
-      setError("请至少输入 50 字的文案内容");
+    if (!analyzeInput.trim() || analyzeInput.trim().length < 10) {
+      setError("请至少输入 10 字的文案内容");
       return;
     }
     setAnalyzeLoading(true);
@@ -568,7 +568,7 @@ export default function Home() {
                 rows={8}
                 className="resize-none bg-slate-900 border-slate-700 text-slate-100 placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 rounded-xl text-sm py-4 px-5"
               />
-              <Button onClick={handleAnalyze} disabled={analyzeLoading || analyzeInput.trim().length < 50}
+              <Button onClick={handleAnalyze} disabled={analyzeLoading || analyzeInput.trim().length < 10}
                 className="w-full bg-amber-500/10 border border-amber-500/40 text-amber-400 hover:bg-amber-500/20 font-mono text-sm">
                 {analyzeLoading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Search className="w-4 h-4 mr-2" />}
                 {analyzeLoading ? "分析中..." : "拆解分析"}
@@ -613,7 +613,7 @@ export default function Home() {
                   className="resize-none bg-slate-900 border-slate-700 text-slate-100 placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 rounded-xl text-sm py-4 px-5"
                 />
               </div>
-                <Button onClick={handleCreateStyle} disabled={styleLoading || !styleName.trim() || styleSamples.trim().split("\n").filter((s: string) => s.trim()).length < 3}
+                <Button onClick={handleCreateStyle} disabled={styleLoading || !styleName.trim() || styleSamples.trim().split("\n").filter((s: string) => s.trim()).length < 1}
                 className="w-full bg-amber-500/10 border border-amber-500/40 text-amber-400 hover:bg-amber-500/20 font-mono text-sm">
                 <Plus className="w-4 h-4 mr-2" />
                 {styleLoading ? "提取中..." : "提取风格"}
