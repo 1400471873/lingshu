@@ -51,10 +51,14 @@ export default function Home() {
   const [analyzeResult, setAnalyzeResult] = useState<any>(null);
   const [analyzeLoading, setAnalyzeLoading] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
+  const [analyzeMode, setAnalyzeMode] = useState<"url" | "text">("text");
+  const [analyzeUrl, setAnalyzeUrl] = useState("");
 
   const [styles, setStyles] = useState<any[]>([]);
-  const [styleName, setStyleName] = useState("");
-  const [styleSamples, setStyleSamples] = useState("");
+    const [styleName, setStyleName] = useState("");
+    const [styleMode, setStyleMode] = useState<"url" | "text">("url");
+    const [styleText, setStyleText] = useState("");
+    const [styleSamples, setStyleSamples] = useState("");
   const [selectedStyleId, setSelectedStyleId] = useState<string | null>(null);
   const [styleProfile, setStyleProfile] = useState<any>(null);
   const [styleLoading, setStyleLoading] = useState(false);
@@ -172,10 +176,11 @@ export default function Home() {
 
 
   const handleCreateStyle = async () => {
-    if (!styleName.trim() || !styleSamples.trim()) return;
+    const samples = styleMode === "url"
+      ? styleSamples.split("\n").filter(s => s.trim())
+      : styleText.trim() ? [styleText.trim()] : [];
+    if (!styleName.trim() || samples.length < 1) return;
     setStyleLoading(true);
-    const samples = styleSamples.split("\n").filter(s => s.trim());
-    if (samples.length < 1) { setError("请至少提供1条文案样本"); setStyleLoading(false); return; }
     try {
       // 先提取风格画像
       const extractRes = await fetch("/api/style/extract", {
@@ -193,22 +198,19 @@ export default function Home() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setStyles(prev => [{ ...data, profile, createdAt: new Date().toISOString() }, ...prev]);
-      setStyleName(""); setStyleSamples("");
+      setStyleName(""); setStyleSamples(""); setStyleText("");
     } catch (err) {
       setError(err instanceof Error ? err.message : "创建失败");
     } finally { setStyleLoading(false); }
   };
   const handleDeleteStyle = async (id: string) => {
-    await fetch("/api/style", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
     setStyles(prev => prev.filter(s => s.id !== id));
     if (selectedStyleId === id) setSelectedStyleId(null);
   };
 
   const handleAnalyze = async () => {
-    if (!analyzeInput.trim() || analyzeInput.trim().length < 10) {
-      setError("请至少输入 10 字的文案内容");
-      return;
-    }
+    const content = analyzeMode === "url" ? analyzeUrl.trim() : analyzeInput.trim();
+    if (!content) return;
     setAnalyzeLoading(true);
     setError("");
     setAnalyzeResult(null);
@@ -216,7 +218,7 @@ export default function Home() {
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: analyzeInput.trim() }),
+        body: JSON.stringify({ content }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
@@ -561,14 +563,29 @@ export default function Home() {
                 </h1>
                 <p className="text-sm text-slate-500">粘贴一篇爆款文案，AI 分析它的结构和套路</p>
               </div>
-              <Textarea
-                placeholder="粘贴链接或文案（公众号/知乎直接抓，小红书请手动复制文本）..."
-                value={analyzeInput}
-                onChange={(e) => setAnalyzeInput(e.target.value)}
-                rows={8}
-                className="resize-none bg-slate-900 border-slate-700 text-slate-100 placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 rounded-xl text-sm py-4 px-5"
-              />
-              <Button onClick={handleAnalyze} disabled={analyzeLoading || analyzeInput.trim().length < 10}
+              <div className="flex gap-2 mb-3">
+                <button onClick={() => setAnalyzeMode("url")}
+                  className={`px-3 py-1 text-xs rounded-md transition-colors ${analyzeMode === "url" ? "bg-amber-500/20 text-amber-400" : "text-slate-500 hover:text-slate-300"}`}>
+                  贴链接
+                </button>
+                <button onClick={() => setAnalyzeMode("text")}
+                  className={`px-3 py-1 text-xs rounded-md transition-colors ${analyzeMode === "text" ? "bg-amber-500/20 text-amber-400" : "text-slate-500 hover:text-slate-300"}`}>
+                  粘贴文本
+                </button>
+              </div>
+              {analyzeMode === "url" ? (
+                <input value={analyzeUrl} onChange={(e) => setAnalyzeUrl(e.target.value)}
+                  placeholder="粘贴一条文章链接，例如公众号/知乎/B站..."
+                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-amber-500/50 focus:outline-none"
+                />
+              ) : (
+                <Textarea value={analyzeInput} onChange={(e) => setAnalyzeInput(e.target.value)}
+                  placeholder="直接粘贴你的文案内容，AI 会分析它的结构和套路..."
+                  rows={8}
+                  className="resize-none bg-slate-900 border-slate-700 text-slate-100 placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 rounded-xl text-sm py-4 px-5"
+                />
+              )}
+              <Button onClick={handleAnalyze} disabled={analyzeLoading || (analyzeMode === "url" ? !analyzeUrl.trim() : !analyzeInput.trim())}
                 className="w-full bg-amber-500/10 border border-amber-500/40 text-amber-400 hover:bg-amber-500/20 font-mono text-sm">
                 {analyzeLoading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Search className="w-4 h-4 mr-2" />}
                 {analyzeLoading ? "分析中..." : "拆解分析"}
@@ -605,15 +622,36 @@ export default function Home() {
                   className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-amber-500/50 focus:outline-none"
                 />
               </div>
-              <div className="space-y-1.5">
-                <label className="text-xs text-muted-foreground font-mono">文案链接（每行一个）</label>
-                <Textarea value={styleSamples} onChange={(e) => setStyleSamples(e.target.value)}
-                  placeholder="粘贴你的小红书/公众号文章链接，每行一个..."
-                  rows={10}
-                  className="resize-none bg-slate-900 border-slate-700 text-slate-100 placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 rounded-xl text-sm py-4 px-5"
-                />
+              <div className="flex gap-2 mb-3">
+                <button onClick={() => setStyleMode("url")}
+                  className={`px-3 py-1 text-xs rounded-md transition-colors ${styleMode === "url" ? "bg-amber-500/20 text-amber-400" : "text-slate-500 hover:text-slate-300"}`}>
+                  贴链接
+                </button>
+                <button onClick={() => setStyleMode("text")}
+                  className={`px-3 py-1 text-xs rounded-md transition-colors ${styleMode === "text" ? "bg-amber-500/20 text-amber-400" : "text-slate-500 hover:text-slate-300"}`}>
+                  粘贴文本
+                </button>
               </div>
-                <Button onClick={handleCreateStyle} disabled={styleLoading || !styleName.trim() || styleSamples.trim().split("\n").filter((s: string) => s.trim()).length < 1}
+              {styleMode === "url" ? (
+                <div className="space-y-1.5">
+                  <label className="text-xs text-muted-foreground font-mono">文章链接（每行一个）</label>
+                  <Textarea value={styleSamples} onChange={(e) => setStyleSamples(e.target.value)}
+                    placeholder="粘贴你的小红书/公众号文章链接，每行一个..."
+                    rows={8}
+                    className="resize-none bg-slate-900 border-slate-700 text-slate-100 placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 rounded-xl text-sm py-4 px-5"
+                  />
+                </div>
+              ) : (
+                <div className="space-y-1.5">
+                  <label className="text-xs text-muted-foreground font-mono">你的文案内容</label>
+                  <Textarea value={styleText} onChange={(e) => setStyleText(e.target.value)}
+                    placeholder="直接粘贴你的历史文案，AI 会从中学习你的写作风格..."
+                    rows={10}
+                    className="resize-none bg-slate-900 border-slate-700 text-slate-100 placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 rounded-xl text-sm py-4 px-5"
+                  />
+                </div>
+              )}
+              <Button onClick={handleCreateStyle} disabled={styleLoading || !styleName.trim() || (styleMode === "url" ? styleSamples.trim().split("\n").filter((s: string) => s.trim()).length < 1 : !styleText.trim())}
                 className="w-full bg-amber-500/10 border border-amber-500/40 text-amber-400 hover:bg-amber-500/20 font-mono text-sm">
                 <Plus className="w-4 h-4 mr-2" />
                 {styleLoading ? "提取中..." : "提取风格"}
