@@ -38,6 +38,13 @@ export async function ensureTables() {
       temperature REAL DEFAULT 0.8,
       createdAt TEXT DEFAULT (datetime('now'))
     );
+    CREATE TABLE IF NOT EXISTS Style (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      samples TEXT DEFAULT '[]',
+      profile TEXT DEFAULT '{}',
+      createdAt TEXT DEFAULT (datetime('now'))
+    );
   `);
   // 插入默认模板
   await client.execute(`
@@ -118,4 +125,28 @@ export async function listGenerations(search: string, page: number, limit: numbe
   });
 
   return { list, total, page, limit, totalPages: Math.ceil(total / limit) };
+}
+
+// ====== Style ======
+export async function createStyle(name: string, samples: string[], profile: object) {
+  const id = uid();
+  await client.execute({
+    sql: "INSERT INTO Style (id,name,samples,profile) VALUES (?,?,?,?)",
+    args: [id, name, JSON.stringify(samples), JSON.stringify(profile)],
+  });
+  return { id, name, samples, profile };
+}
+
+export async function getStyle(id: string) {
+  const rs = await client.execute({ sql: "SELECT * FROM Style WHERE id=?", args: [id] });
+  return rs.rows[0] || null;
+}
+
+export async function listStyles() {
+  const rs = await client.execute({ sql: "SELECT id,name,createdAt FROM Style ORDER BY createdAt DESC" });
+  return rs.rows;
+}
+
+export async function deleteStyle(id: string) {
+  await client.execute({ sql: "DELETE FROM Style WHERE id=?", args: [id] });
 }

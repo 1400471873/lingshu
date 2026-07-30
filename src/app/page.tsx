@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
-import { Terminal, Clock, Send, Copy, Download, Pencil, Check, X, PanelLeftClose, PanelLeft, RefreshCw } from "lucide-react";
+import { Terminal, Clock, Send, Copy, Download, Pencil, Check, X, PanelLeftClose, PanelLeft, RefreshCw, Search, Sparkles } from "lucide-react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -46,6 +46,10 @@ export default function Home() {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState("");
   const [mounted, setMounted] = useState(false);
+  const [tab, setTab] = useState<"generate" | "analyze">("generate");
+  const [analyzeInput, setAnalyzeInput] = useState("");
+  const [analyzeResult, setAnalyzeResult] = useState<any>(null);
+  const [analyzeLoading, setAnalyzeLoading] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -149,6 +153,28 @@ export default function Home() {
     }
   };
 
+  const handleAnalyze = async () => {
+    if (!analyzeInput.trim() || analyzeInput.trim().length < 50) {
+      setError("请至少输入 50 字的文案内容");
+      return;
+    }
+    setAnalyzeLoading(true);
+    setError("");
+    setAnalyzeResult(null);
+    try {
+      const res = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: analyzeInput.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setAnalyzeResult(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "分析失败");
+    } finally { setAnalyzeLoading(false); }
+  };
+
   if (!mounted) return null;
 
   const platformInfo = platforms.find((p) => p.value === platform);
@@ -171,6 +197,24 @@ export default function Home() {
           <Terminal className="w-4 h-4 text-amber-500" />
           <span className="font-semibold text-sm">灵枢</span>
           <span className="text-xs text-slate-600">v1.0</span>
+        </div>
+        <div className="flex items-center gap-0.5 ml-4 bg-slate-800/50 rounded-lg p-0.5">
+          <button
+            onClick={() => setTab("generate")}
+            className={`px-3 py-1 text-xs rounded-md transition-colors ${
+              tab === "generate" ? "bg-amber-500/20 text-amber-400" : "text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <Sparkles className="w-3 h-3 inline mr-1" />生成
+          </button>
+          <button
+            onClick={() => setTab("analyze")}
+            className={`px-3 py-1 text-xs rounded-md transition-colors ${
+              tab === "analyze" ? "bg-amber-500/20 text-amber-400" : "text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <Search className="w-3 h-3 inline mr-1" />拆解
+          </button>
         </div>
         <div className="ml-auto flex items-center gap-2">
           <Link href="/history">
@@ -271,6 +315,7 @@ export default function Home() {
         {/* MAIN */}
         <main className="flex-1 overflow-y-auto">
           <div className="max-w-3xl mx-auto px-6 py-8 space-y-8">
+            {tab === "generate" && (<>
             {/* INPUT AREA */}
             <div className="space-y-4">
               <div className="text-center space-y-1 mb-6">
@@ -407,6 +452,46 @@ export default function Home() {
             )}
 
             <div className="h-12" />
+            </>)}
+
+            {tab === "analyze" && (<>
+            <div className="space-y-4">
+              <div className="text-center space-y-1 mb-6">
+                <h1 className="text-2xl font-bold tracking-tight">
+                  爆款<span className="text-amber-400">拆解</span>
+                </h1>
+                <p className="text-sm text-slate-500">粘贴一篇爆款文案，AI 分析它的结构和套路</p>
+              </div>
+              <Textarea
+                placeholder="粘贴你想拆解的爆款文案（至少50字）..."
+                value={analyzeInput}
+                onChange={(e) => setAnalyzeInput(e.target.value)}
+                rows={8}
+                className="resize-none bg-slate-900 border-slate-700 text-slate-100 placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 rounded-xl text-sm py-4 px-5"
+              />
+              <Button onClick={handleAnalyze} disabled={analyzeLoading || analyzeInput.trim().length < 50}
+                className="w-full bg-amber-500/10 border border-amber-500/40 text-amber-400 hover:bg-amber-500/20 font-mono text-sm">
+                {analyzeLoading ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Search className="w-4 h-4 mr-2" />}
+                {analyzeLoading ? "分析中..." : "拆解分析"}
+              </Button>
+            </div>
+            {analyzeResult && (
+            <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden mt-6">
+              <div className="p-5 space-y-4 text-sm">
+                <div><span className="text-amber-400 font-medium">标题公式：</span><span className="text-slate-300">{analyzeResult.titleFormula}</span></div>
+                <div><span className="text-amber-400 font-medium">正文结构：</span><span className="text-slate-300 whitespace-pre-wrap">{analyzeResult.structure}</span></div>
+                <div><span className="text-amber-400 font-medium">关键词：</span><span className="text-slate-300">{analyzeResult.keywords?.join(" · ")}</span></div>
+                <div><span className="text-amber-400 font-medium">语气风格：</span><span className="text-slate-300">{analyzeResult.tone}</span></div>
+                <div><span className="text-amber-400 font-medium">钩子：</span><span className="text-slate-300">{analyzeResult.hooks?.join(" | ")}</span></div>
+                <div className="bg-amber-500/5 border border-amber-500/20 rounded-lg p-3">
+                  <span className="text-amber-400 font-medium">可复用建议：</span><span className="text-slate-300 whitespace-pre-wrap">{analyzeResult.suggestions}</span>
+                </div>
+              </div>
+            </div>
+            )}
+            <div className="h-12" />
+            </>)}
+
           </div>
         </main>
       </div>
