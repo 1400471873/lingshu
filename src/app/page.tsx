@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
-import { Terminal, Clock, Send, Copy, Download, Pencil, Check, X, PanelLeftClose, PanelLeft, RefreshCw, Search, Sparkles } from "lucide-react";
+import { Terminal, Clock, Send, Copy, Download, Pencil, Check, X, PanelLeftClose, PanelLeft, RefreshCw, Search, Sparkles, User, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -52,6 +52,15 @@ export default function Home() {
   const [analyzeLoading, setAnalyzeLoading] = useState(false);
   const resultRef = useRef<HTMLDivElement>(null);
 
+  const [styles, setStyles] = useState<any[]>([]);
+  const [styleName, setStyleName] = useState("");
+  const [styleSamples, setStyleSamples] = useState("");
+  const [selectedStyleId, setSelectedStyleId] = useState<string | null>(null);
+  const [styleProfile, setStyleProfile] = useState<any>(null);
+  const [styleLoading, setStyleLoading] = useState(false);
+  const [stylesLoaded, setStylesLoaded] = useState(false);
+
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -66,7 +75,7 @@ export default function Home() {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic: topic.trim(), platform, contentType, model }),
+        body: JSON.stringify({ topic: topic.trim(), platform, contentType, model, styleId: selectedStyleId }),
       });
       if (!res.ok) {
         const errData = await res.json();
@@ -151,6 +160,36 @@ export default function Home() {
     } catch (err) {
       setError(err instanceof Error ? err.message : "保存失败");
     }
+  };
+
+
+  const handleCreateStyle = async () => {
+    if (!styleName.trim() || !styleSamples.trim()) return;
+    setStyleLoading(true);
+    const samples = styleSamples.split("\n---\n").filter(s => s.trim());
+    try {
+      const res = await fetch("/api/style", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: styleName.trim(), samples }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      // Extract style profile
+      const extractRes = await fetch("/api/style/extract", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ samples }),
+      });
+      const profile = await extractRes.json();
+      if (extractRes.ok) setStyleProfile(profile);
+      setStyles(prev => [{ ...data, profile }, ...prev]);
+      setStyleName(""); setStyleSamples("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "创建失败");
+    } finally { setStyleLoading(false); }
+  };
+  const handleDeleteStyle = async (id: string) => {
+    await fetch("/api/style", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
+    setStyles(prev => prev.filter(s => s.id !== id));
   };
 
   const handleAnalyze = async () => {

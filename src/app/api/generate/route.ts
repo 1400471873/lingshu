@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { buildPrompt } from "@/lib/prompt-builder";
 import { generateWithDeepSeekStream } from "@/lib/ai-client";
-import { getTemplate, createGeneration } from "@/lib/db";
+import { getTemplate, createGeneration, getStyle } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -11,7 +11,7 @@ const VALID_CONTENT_TYPES = ["tuwen", "short_video", "long_article", "title", "c
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { topic, platform, contentType, model = "deepseek-chat" } = body;
+  const { topic, platform, contentType, model = "deepseek-chat", styleId } = body;
 
   if (!topic || typeof topic !== "string" || topic.trim().length === 0) {
     return new Response(JSON.stringify({ error: "请输入主题" }), { status: 400 });
@@ -36,6 +36,19 @@ export async function POST(request: NextRequest) {
       JSON.stringify({ error: err instanceof Error ? err.message : "模板不存在" }),
       { status: 400 }
     );
+  }
+
+  // 风格注入
+  if (styleId) {
+    try {
+      const style = await getStyle(styleId);
+      if (style) {
+        const profile = JSON.parse((style as any).profile || "{}");
+        if (profile.voicePrompt) {
+          systemPrompt = `【写作风格要求】${profile.voicePrompt}\n\n${systemPrompt}`;
+        }
+      }
+    } catch { /* ignore style errors */ }
   }
 
   const encoder = new TextEncoder();
