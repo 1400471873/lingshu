@@ -564,7 +564,7 @@ export default function Home() {
                   className="resize-none bg-slate-900 border-slate-700 text-slate-100 placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 rounded-xl text-sm py-4 px-5"
                 />
               </div>
-              <Button onClick={handleCreateStyle} disabled={styleLoading || !styleName.trim() || styleSamples.trim().split("\n---\n").filter((s: string) => s.trim()).length < 3}
+                <Button onClick={handleCreateStyle} disabled={styleLoading || !styleName.trim() || styleSamples.trim().split("\n").filter((s: string) => s.trim()).length < 3}
                 className="w-full bg-amber-500/10 border border-amber-500/40 text-amber-400 hover:bg-amber-500/20 font-mono text-sm">
                 <Plus className="w-4 h-4 mr-2" />
                 {styleLoading ? "提取中..." : "提取风格"}
