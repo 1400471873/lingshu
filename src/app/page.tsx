@@ -166,7 +166,7 @@ export default function Home() {
   const handleCreateStyle = async () => {
     if (!styleName.trim() || !styleSamples.trim()) return;
     setStyleLoading(true);
-    const samples = styleSamples.split("\n---\n").filter(s => s.trim());
+    const samples = styleSamples.split("\n").filter(s => s.trim());
     if (samples.length < 3) { setError("请至少提供3条文案样本"); setStyleLoading(false); return; }
     try {
       // 先提取风格画像
@@ -557,9 +557,9 @@ export default function Home() {
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs text-muted-foreground font-mono">文案样本（用 --- 分隔多条）</label>
+                <label className="text-xs text-muted-foreground font-mono">文案链接（每行一个）</label>
                 <Textarea value={styleSamples} onChange={(e) => setStyleSamples(e.target.value)}
-                  placeholder="粘贴你的历史文案，至少3篇，用 --- 分隔..."
+                  placeholder="粘贴你的小红书/公众号文章链接，每行一个..."
                   rows={10}
                   className="resize-none bg-slate-900 border-slate-700 text-slate-100 placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 rounded-xl text-sm py-4 px-5"
                 />
