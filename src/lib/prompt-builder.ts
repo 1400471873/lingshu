@@ -1,4 +1,4 @@
-import { getTemplate, ensureTables } from "./db";
+import { getTemplateFallback, ensureTables } from "./db";
 
 export interface BuiltPrompt {
   systemPrompt: string;
@@ -12,7 +12,7 @@ export async function buildPrompt(
   topic: string
 ): Promise<BuiltPrompt> {
   await ensureTables();
-  const template = await getTemplate(platform, contentType);
+  const template = await getTemplateFallback(platform, contentType);
 
   if (!template) {
     throw new Error(
