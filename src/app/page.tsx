@@ -65,6 +65,14 @@ export default function Home() {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (stylesLoaded) return;
+    fetch("/api/style").then(r => r.json()).then(data => {
+      setStyles(data.styles || []);
+      setStylesLoaded(true);
+    }).catch(() => {});
+  }, [stylesLoaded]);
+
   const handleGenerate = async () => {
     if (!topic.trim()) return;
     setLoading(true);
@@ -193,6 +201,7 @@ export default function Home() {
   const handleDeleteStyle = async (id: string) => {
     await fetch("/api/style", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) });
     setStyles(prev => prev.filter(s => s.id !== id));
+    if (selectedStyleId === id) setSelectedStyleId(null);
   };
 
   const handleAnalyze = async () => {
@@ -359,6 +368,40 @@ export default function Home() {
                 ))}
               </div>
             </div>
+
+            <Separator className="bg-slate-800" />
+
+            {/* Style */}
+            <div>
+              <h3 className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2 px-1">风格（可选）</h3>
+              <div className="space-y-0.5">
+                <button
+                  onClick={() => setSelectedStyleId(null)}
+                  className={
+                    "w-full text-left px-3 py-1.5 rounded text-sm transition-colors " +
+                    (!selectedStyleId
+                      ? "bg-amber-500/10 text-amber-400 border border-amber-500/30"
+                      : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50")
+                  }
+                >
+                  不使用风格
+                </button>
+                {styles.map((s) => (
+                  <button
+                    key={s.id}
+                    onClick={() => setSelectedStyleId(s.id)}
+                    className={
+                      "w-full text-left px-3 py-1.5 rounded text-sm transition-colors " +
+                      (selectedStyleId === s.id
+                        ? "bg-amber-500/10 text-amber-400 border border-amber-500/30"
+                        : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50")
+                    }
+                  >
+                    {s.name}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </aside>
 
@@ -409,6 +452,12 @@ export default function Home() {
                 <span>{ctInfo?.label}</span>
                 <span>&middot;</span>
                 <span>{modelInfo?.label}</span>
+                {selectedStyleId && (
+                  <>
+                    <span>&middot;</span>
+                    <span className="text-amber-400">{styles.find(s => s.id === selectedStyleId)?.name || "风格"}</span>
+                  </>
+                )}
               </div>
             </div>
 
