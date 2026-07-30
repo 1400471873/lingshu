@@ -46,7 +46,7 @@ export default function Home() {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState("");
   const [mounted, setMounted] = useState(false);
-  const [tab, setTab] = useState<"generate" | "analyze">("generate");
+  const [tab, setTab] = useState<"generate" | "analyze" | "style">("generate");
   const [analyzeInput, setAnalyzeInput] = useState("");
   const [analyzeResult, setAnalyzeResult] = useState<any>(null);
   const [analyzeLoading, setAnalyzeLoading] = useState(false);
@@ -253,6 +253,14 @@ export default function Home() {
             }`}
           >
             <Search className="w-3 h-3 inline mr-1" />拆解
+          </button>
+          <button
+            onClick={() => setTab("style")}
+            className={`px-3 py-1 text-xs rounded-md transition-colors ${
+              tab === "style" ? "bg-amber-500/20 text-amber-400" : "text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <User className="w-3 h-3 inline mr-1" />风格
           </button>
         </div>
         <div className="ml-auto flex items-center gap-2">
@@ -528,6 +536,56 @@ export default function Home() {
               </div>
             </div>
             )}
+            <div className="h-12" />
+            </>)}
+            {tab === "style" && (<>
+            <div className="space-y-4">
+              <div className="text-center space-y-1 mb-6">
+                <h1 className="text-2xl font-bold tracking-tight">
+                  风格<span className="text-amber-400">克隆</span>
+                </h1>
+                <p className="text-sm text-slate-500">上传你的历史文案，AI 学习你的写作风格</p>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs text-muted-foreground font-mono">风格名称</label>
+                <input value={styleName} onChange={(e) => setStyleName(e.target.value)}
+                  placeholder="例如：我的小红书风格"
+                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:border-amber-500/50 focus:outline-none"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs text-muted-foreground font-mono">文案样本（用 --- 分隔多条）</label>
+                <Textarea value={styleSamples} onChange={(e) => setStyleSamples(e.target.value)}
+                  placeholder="粘贴你的历史文案，至少3篇，用 --- 分隔..."
+                  rows={10}
+                  className="resize-none bg-slate-900 border-slate-700 text-slate-100 placeholder:text-slate-600 focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/20 rounded-xl text-sm py-4 px-5"
+                />
+              </div>
+              <Button onClick={handleCreateStyle} disabled={styleLoading || !styleName.trim() || styleSamples.trim().split("
+---
+").filter((s: string) => s.trim()).length < 3}
+                className="w-full bg-amber-500/10 border border-amber-500/40 text-amber-400 hover:bg-amber-500/20 font-mono text-sm">
+                <Plus className="w-4 h-4 mr-2" />
+                {styleLoading ? "提取中..." : "提取风格"}
+              </Button>
+              {styles.length > 0 && (
+              <div className="space-y-3 mt-6">
+                <h3 className="text-sm font-medium text-slate-400">已保存的风格</h3>
+                {styles.map((s: any) => (
+                  <div key={s.id} className="bg-slate-900 border border-slate-800 rounded-lg p-4 flex items-center justify-between">
+                    <div>
+                      <span className="text-sm font-medium text-slate-200">{s.name}</span>
+                      <span className="text-xs text-slate-500 ml-2">{new Date(s.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    <Button variant="ghost" size="sm" onClick={() => handleDeleteStyle(s.id)}
+                      className="text-slate-500 hover:text-red-400 h-7">
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+              )}
+            </div>
             <div className="h-12" />
             </>)}
 
