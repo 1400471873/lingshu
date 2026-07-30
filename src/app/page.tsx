@@ -167,21 +167,24 @@ export default function Home() {
     if (!styleName.trim() || !styleSamples.trim()) return;
     setStyleLoading(true);
     const samples = styleSamples.split("\n---\n").filter(s => s.trim());
+    if (samples.length < 3) { setError("请至少提供3条文案样本"); setStyleLoading(false); return; }
     try {
+      // 先提取风格画像
+      const extractRes = await fetch("/api/style/extract", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ samples }),
+      });
+      const profile = await extractRes.json();
+      if (!extractRes.ok) throw new Error(profile.error);
+      setStyleProfile(profile);
+      // 再创建保存
       const res = await fetch("/api/style", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: styleName.trim(), samples }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
-      // Extract style profile
-      const extractRes = await fetch("/api/style/extract", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ samples }),
-      });
-      const profile = await extractRes.json();
-      if (extractRes.ok) setStyleProfile(profile);
-      setStyles(prev => [{ ...data, profile }, ...prev]);
+      setStyles(prev => [{ ...data, profile, createdAt: new Date().toISOString() }, ...prev]);
       setStyleName(""); setStyleSamples("");
     } catch (err) {
       setError(err instanceof Error ? err.message : "创建失败");
@@ -573,7 +576,7 @@ export default function Home() {
                   <div key={s.id} className="bg-slate-900 border border-slate-800 rounded-lg p-4 flex items-center justify-between">
                     <div>
                       <span className="text-sm font-medium text-slate-200">{s.name}</span>
-                      <span className="text-xs text-slate-500 ml-2">{new Date(s.createdAt).toLocaleDateString()}</span>
+                      <span className="text-xs text-slate-500 ml-2">{new Date(s.createdAt).toLocaleDateString("zh-CN")}</span>
                     </div>
                     <Button variant="ghost" size="sm" onClick={() => handleDeleteStyle(s.id)}
                       className="text-slate-500 hover:text-red-400 h-7">

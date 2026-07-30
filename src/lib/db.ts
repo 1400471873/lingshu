@@ -130,11 +130,12 @@ export async function listGenerations(search: string, page: number, limit: numbe
 // ====== Style ======
 export async function createStyle(name: string, samples: string[], profile: object) {
   const id = uid();
+  const createdAt = new Date().toISOString();
   await client.execute({
-    sql: "INSERT INTO Style (id,name,samples,profile) VALUES (?,?,?,?)",
-    args: [id, name, JSON.stringify(samples), JSON.stringify(profile)],
+    sql: "INSERT INTO Style (id,name,samples,profile,createdAt) VALUES (?,?,?,?,?)",
+    args: [id, name, JSON.stringify(samples), JSON.stringify(profile), createdAt],
   });
-  return { id, name, samples, profile };
+  return { id, name, samples, profile, createdAt };
 }
 
 export async function getStyle(id: string) {
