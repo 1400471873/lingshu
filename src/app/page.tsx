@@ -463,7 +463,7 @@ export default function Home() {
                 <p className="text-sm text-slate-500">粘贴一篇爆款文案，AI 分析它的结构和套路</p>
               </div>
               <Textarea
-                placeholder="粘贴你想拆解的爆款文案（至少50字）..."
+                placeholder="粘贴链接或文案（公众号/知乎直接抓，小红书请手动复制文本）..."
                 value={analyzeInput}
                 onChange={(e) => setAnalyzeInput(e.target.value)}
                 rows={8}
