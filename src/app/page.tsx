@@ -228,6 +228,13 @@ export default function Home() {
     } finally { setAnalyzeLoading(false); }
   };
 
+  const handleRewriteWithFormula = () => {
+    if (!analyzeResult) return;
+    const parts = [analyzeResult.titleFormula, analyzeResult.keywords?.join(" "), analyzeResult.hooks?.[0]]
+      .filter(Boolean).join(" | ");
+    setTopic(parts);
+    setTab("generate");
+  };
   if (!mounted) return null;
 
   const platformInfo = platforms.find((p) => p.value === platform);
@@ -602,6 +609,10 @@ export default function Home() {
                 <div className="bg-amber-500/5 border border-amber-500/20 rounded-lg p-3">
                   <span className="text-amber-400 font-medium">可复用建议：</span><span className="text-slate-300 whitespace-pre-wrap">{analyzeResult.suggestions}</span>
                 </div>
+                <Button onClick={handleRewriteWithFormula}
+                  className="w-full bg-amber-500/20 border border-amber-500/40 text-amber-400 hover:bg-amber-500/30 font-mono text-sm mt-2">
+                  <Sparkles className="w-4 h-4 mr-2" />用此公式仿写
+                </Button>
               </div>
             </div>
             )}
